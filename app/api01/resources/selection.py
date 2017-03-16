@@ -29,6 +29,8 @@ class Selection(Resource):
         self.bounds_parser = reqparse.RequestParser()
         self.network_parser = reqparse.RequestParser()
         self.put_parser = reqparse.RequestParser()
+        self.general_parser.add_argument('p_id', type=str, location='json',
+                                         help='No p_id field provided')
         self.general_parser.add_argument('name', type=str, location='json',
                                          help='No name field provided')
         self.general_parser.add_argument('comment', type=str, location='json',
@@ -71,7 +73,7 @@ class Selection(Resource):
 
 # POST
     @marshal_with(selection_fields)
-    def post(self, p_id):
+    def post(self):
         u_id = g.user['u_id']
         logging.info('Creating new selection')
         s_id = ObjectId()
@@ -80,7 +82,7 @@ class Selection(Resource):
         link_args = self.link_parser.parse_args()
         selection = {"_id": s_id,
                      "s_id": str(s_id),
-                     "p_id": p_id,
+                     "p_id": args.p_id,
                      "u_id": u_id,
                      "type": args.type,
                      "comment": args.comment,
@@ -94,7 +96,7 @@ class Selection(Resource):
         if args.type == "node":
             node = {"_id": s_id,
                     "n_id": str(s_id),
-                    "p_id": p_id,
+                    "p_id": args.p_id,
                     "u_id": u_id,
                     "name": args.name}
             logging.info('Saving node ' + s_id)
@@ -104,7 +106,7 @@ class Selection(Resource):
         elif args.type == "link":
             link = {"_id": s_id,
                     "l_id": str(s_id),
-                    "p_id": p_id,
+                    "p_id": args.p_id,
                     "u_id": u_id,
                     "name": args.name,
                     "value": 1,

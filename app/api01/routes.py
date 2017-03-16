@@ -41,17 +41,18 @@ api.add_resource(UserInProject, '/userinproject/<p_id>/',
 
 #  *** UTTERANCE ***
 #   GET
-api.add_resource(Utterance, '/utterance/<id>/')
-api.add_resource(Utterances, '/utterances/<p_id>/')
+api.add_resource(Utterance, '/utterance/<id>/', endpoint='utterance')
+api.add_resource(Utterances, '/utterances/<p_id>/', endpoint='utterances')
 
 #  *** SELECTION ***
 #   POST
-api.add_resource(Selection, '/selection/<p_id>/')
+api.add_resource(Selection, '/selection/', endpoint='new_selection')
 #   GET PUT DELETE
-api.add_resource(Selection, '/selection/<s_id>/')
+api.add_resource(Selection, '/selection/<s_id>/', endpoint='selection')
 #   GET
-api.add_resource(Selections, '/selections/<p_id>/')
-api.add_resource(Selections_by_type, '/selections/<p_id>/<type>/')
+api.add_resource(Selections, '/selections/<p_id>/', endpoint='selections')
+api.add_resource(Selections_by_type, '/selections/<p_id>/<type>/',
+                 endpoint='selections_by_type')
 
 #  *** NODE ***
 #   GET
