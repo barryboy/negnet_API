@@ -32,7 +32,7 @@ class NewUser(Resource):
                                  help='No username provided')
         self.parser.add_argument('password', type=str, location='json',
                                  help='No password provided')
-        super(User, self).__init__()
+        super(NewUser, self).__init__()
 
 # POST
     @marshal_with(user_fields)

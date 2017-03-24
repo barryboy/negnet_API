@@ -21,7 +21,7 @@ api.add_resource(Token, '/api01/token/')
 #   POST
 api.add_resource(NewUser, '/newuser/', endpoint='new_user')
 #   GET PUT DELETE
-api.add_resource(User, '/user/', endpoint='user')
+api.add_resource(NewUser, '/user/', endpoint='user')
 #   GET
 api.add_resource(Users, '/users/', endpoint='all_users')
 api.add_resource(Users, '/users/<p_id>/', endpoint='users_in_project')
