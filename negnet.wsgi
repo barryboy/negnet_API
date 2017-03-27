@@ -10,4 +10,4 @@ sys.stdout = sys.stderr
 
 sys.path.insert(0, "/home/negnet/API/")
 from app import create_app
-application = create_app(os.getenv('NEGNET_CONFIG') or 'default')
+application = create_app(os.getenv('NEGNET_CONFIG') or 'production')
