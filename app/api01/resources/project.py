@@ -54,7 +54,7 @@ class Project(Resource):
     def post(self):
         logging.info('Creating new project')
         args = self.parser.parse_args()
-        if not args.uid:
+        if not args.u_id:
             logging.info('No u_id specified')
             abort(400)
         p_id = ObjectId()
@@ -178,6 +178,6 @@ class Projects(Resource):
         p_ids = list()
         for id in list(u_in_p):
             p_ids.append(id['p_id'])
-        projects = g.mongo.db.project.find({"p_id": {"$in": p_ids}})
+        projects = list(g.mongo.db.project.find({"p_id": {"$in": p_ids}}))
         logging.info(projects)
         return projects, 200
