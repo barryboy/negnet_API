@@ -15,7 +15,7 @@ api = Api(api01)
 
 #  *** TOKEN ***
 #   GET
-api.add_resource(Token, '/api01/token/')
+api.add_resource(Token, '/token/')
 
 # *** USER ***
 #   POST
