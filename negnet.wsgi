@@ -2,8 +2,6 @@
 
 import os
 import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 activate_this = '/home/negnet/.virtualenvs/negnet/bin/activate_this.py'
 with open(activate_this) as file_:
