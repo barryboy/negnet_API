@@ -145,7 +145,7 @@ class Project(Resource):
                 'content': u['u']
             }
             g.mongo.db.utterance.insert_one(utterance)
-            logging.info('Inserted utterance: ' + utterance)
+            #logging.info('Inserted utterance: ' + utterance)
 
 # DELETE
     def delete(self, p_id):
