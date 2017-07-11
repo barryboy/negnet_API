@@ -11,11 +11,12 @@ logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
 selection_fields = {
     's_id': fields.String,
-    'utt_id': fields.String,
     'p_id': fields.String,
     'u_id': fields.String,
-    'from': fields.Integer,
-    'to': fields.Integer,
+    'start_utt_id': fields.String,
+    'end_utt_id': fields.String,
+    'start_pos': fields.Integer,
+    'end_pos': fields.Integer,
     'type': fields.String,
     'comment': fields.String
 }
@@ -29,6 +30,7 @@ class Selection(Resource):
         self.bounds_parser = reqparse.RequestParser()
         self.network_parser = reqparse.RequestParser()
         self.put_parser = reqparse.RequestParser()
+        self.link_parser = reqparse.RequestParser()
         self.general_parser.add_argument('p_id', type=str, location='json',
                                          help='No p_id field provided')
         self.general_parser.add_argument('name', type=str, location='json',
@@ -79,7 +81,6 @@ class Selection(Resource):
         s_id = ObjectId()
         args = self.general_parser.parse_args()
         bounds_args = self.bounds_parser.parse_args()
-        link_args = self.link_parser.parse_args()
         selection = {"_id": s_id,
                      "s_id": str(s_id),
                      "p_id": args.p_id,
@@ -90,7 +91,7 @@ class Selection(Resource):
                      "end_utt_id": bounds_args.end_utt_id,
                      "start_pos": bounds_args.start_pos,
                      "end_pos": bounds_args.end_pos}
-        logging.info('Saving selection ' + s_id)
+        logging.info('Saving selection ' + str(s_id))
         logging.info(selection)
         g.mongo.db.selection.insert_one(selection)
         if args.type == "node":
@@ -99,11 +100,12 @@ class Selection(Resource):
                     "p_id": args.p_id,
                     "u_id": u_id,
                     "name": args.name}
-            logging.info('Saving node ' + s_id)
+            logging.info('Saving node ' + str(s_id))
             logging.info(node)
             g.mongo.db.node.insert_one(node)
 
         elif args.type == "link":
+            link_args = self.link_parser.parse_args()
             link = {"_id": s_id,
                     "l_id": str(s_id),
                     "p_id": args.p_id,
@@ -112,7 +114,7 @@ class Selection(Resource):
                     "value": 1,
                     "node_from": link_args.node_from,
                     "node_to": link_args.node_to}
-            logging.info('Saving link ' + s_id)
+            logging.info('Saving link ' + str(s_id))
             logging.info(link)
             g.mongo.db.link.insert_one(link)
         else:
