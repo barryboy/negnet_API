@@ -20,7 +20,8 @@ selection_fields = {
     'abs_start_pos': fields.Integer,
     'abs_end_pos': fields.Integer,
     'type': fields.String,
-    'comment': fields.String
+    'comment': fields.String,
+    'content': fields.String
 }
 
 
@@ -38,6 +39,8 @@ class Selection(Resource):
         self.general_parser.add_argument('name', type=str, location='json',
                                          help='No name field provided')
         self.general_parser.add_argument('comment', type=str, location='json',
+                                         help='No comment provided')
+        self.general_parser.add_argument('content', type=str, location='json',
                                          help='No comment provided')
         self.general_parser.add_argument('type', type=str, location='json',
                                          required=True,
@@ -97,6 +100,7 @@ class Selection(Resource):
                      "u_id": u_id,
                      "type": args.type,
                      "comment": args.comment,
+                     "content": args.content,
                      "start_utt_id": bounds_args.start_utt_id,
                      "end_utt_id": bounds_args.end_utt_id,
                      "start_pos": bounds_args.start_pos,
