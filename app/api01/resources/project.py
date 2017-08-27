@@ -131,7 +131,7 @@ class Project(Resource):
                                 secure_filename(data.filename))
         logging.info('Data file: ' + filename)
         data.save(filename)
-        stream = open(filename, "r")
+        stream = open(filename, "r", encoding = 'utf-8')
         yaml_object = yaml.load(stream)
         utterances = yaml_object['content']
         for u in utterances:
