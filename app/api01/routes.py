@@ -56,10 +56,10 @@ api.add_resource(Selections_by_type, '/selections/<p_id>/<type>/',
 
 #  *** NODE ***
 #   GET
-api.add_resource(Node, '/api01/node/<n_id>/')
-api.add_resource(Nodes, '/api01/nodes/<p_id>/')
+api.add_resource(Node, '/node/<n_id>/')
+api.add_resource(Nodes, '/nodes/<p_id>/')
 
 #  *** LINK ***
 #   GET
-api.add_resource(Link, '/api01/link/<l_id>/')
-api.add_resource(Links, '/api01/links/<p_id>/')
+api.add_resource(Link, '/link/<l_id>/')
+api.add_resource(Links, '/links/<p_id>/')

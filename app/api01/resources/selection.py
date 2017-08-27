@@ -17,6 +17,8 @@ selection_fields = {
     'end_utt_id': fields.String,
     'start_pos': fields.Integer,
     'end_pos': fields.Integer,
+    'abs_start_pos': fields.Integer,
+    'abs_end_pos': fields.Integer,
     'type': fields.String,
     'comment': fields.String
 }
@@ -59,6 +61,14 @@ class Selection(Resource):
                                         location='json',
                                         required=True,
                                         help='No end_pos provided')
+        self.bounds_parser.add_argument('abs_start_pos', type=int,
+                                        location='json',
+                                        required=True,
+                                        help='No start_pos provided')
+        self.bounds_parser.add_argument('abs_end_pos', type=int,
+                                        location='json',
+                                        required=True,
+                                        help='No end_pos provided')
         self.link_parser.add_argument('node_from', type=str, location='json',
                                       help='No node_from position provided')
         self.link_parser.add_argument('node_to', type=str, location='json',
@@ -90,7 +100,9 @@ class Selection(Resource):
                      "start_utt_id": bounds_args.start_utt_id,
                      "end_utt_id": bounds_args.end_utt_id,
                      "start_pos": bounds_args.start_pos,
-                     "end_pos": bounds_args.end_pos}
+                     "end_pos": bounds_args.end_pos,
+                     "abs_start_pos": bounds_args.abs_start_pos,
+                     "abs_end_pos": bounds_args.abs_end_pos}
         logging.info('Saving selection ' + str(s_id))
         logging.info(selection)
         g.mongo.db.selection.insert_one(selection)
@@ -135,8 +147,10 @@ class Selection(Resource):
             logging.info('Changing selection bounds')
             new_bounds = {"start_utt_id": bounds_args.start_utt_id,
                           "end_utt_id": bounds_args.end_utt_id,
-                          "end_utt_id": bounds_args.start_pos,
-                          "end_utt_id": bounds_args.end_pos}
+                          "start_pos": bounds_args.start_pos,
+                          "end_pos": bounds_args.end_pos,
+                          "abs_start_pos": bounds_args.abs_start_pos,
+                          "abs_end_pos": bounds_args.abs_end_pos}
             g.mongo.db.selection.update({"s_id": s_id},
                                         {"$set": new_bounds})
         elif put_args.action == 'change_comment':
@@ -182,8 +196,8 @@ class Selections(Resource):
     def get(self, p_id):
         u_id = g.user['u_id']
         logging.info('Getting all users selections in the project')
-        selections = g.mongo.db.selection.find({"p_id": p_id,
-                                                "u_id": u_id})
+        selections = list(g.mongo.db.selection.find({"p_id": p_id,
+                                                "u_id": u_id}))
         logging.info(selections)
         return selections, 200
 
@@ -202,8 +216,8 @@ class Selections_by_type(Resource):
         if type not in ["node", "link"]:
             logging.info('type must be either node or link, was: ' + type)
             abort(404)
-        selections = g.mongo.db.selection.find({"p_id": p_id,
+        selections = list(g.mongo.db.selection.find({"p_id": p_id,
                                                 "u_id": u_id,
-                                                "type": type})
+                                                "type": type}))
         logging.info(selections)
         return selections, 200
